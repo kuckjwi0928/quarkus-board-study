@@ -3,7 +3,7 @@ package com.kuckjwi.board.domain;
 import java.time.LocalDateTime;
 
 public record Board(String title, String content, LocalDateTime createdAt, LocalDateTime updatedAt) {
-  public static Board from(BoardEntity entity) {
+  public static Board of(BoardEntity entity) {
     return new Board(entity.title, entity.content, entity.createdAt, entity.updatedAt);
   }
 

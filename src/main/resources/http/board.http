@@ -1,0 +1,7 @@
+POST localhost:8080/boards
+Content-Type: application/json
+
+{
+  "title": "My Board",
+  "content": "My Board Content"
+}

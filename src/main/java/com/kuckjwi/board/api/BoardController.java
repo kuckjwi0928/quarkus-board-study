@@ -3,21 +3,18 @@ package com.kuckjwi.board.api;
 import com.kuckjwi.board.domain.Board;
 import com.kuckjwi.board.domain.BoardService;
 
-import javax.inject.Inject;
-import javax.validation.ConstraintViolationException;
-import javax.validation.Validator;
+import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
 @Path("/boards")
 public class BoardController {
-  @Inject
   BoardService boardService;
 
-  @Inject
-  Validator validator;
-
+  public BoardController(BoardService boardService) {
+    this.boardService = boardService;
+  }
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   public List<Board> getBoards() {
@@ -34,11 +31,7 @@ public class BoardController {
   @POST
   @Produces(MediaType.APPLICATION_JSON)
   @Consumes(MediaType.APPLICATION_JSON)
-  public Board createBoard(CreateBoardRequest request) {
-    final var violations = validator.validate(request);
-    if (!violations.isEmpty()) {
-      throw new ConstraintViolationException(violations);
-    }
+  public Board createBoard(@Valid CreateBoardRequest request) {
     return boardService.createBoard(request.toBoard());
   }
 }
