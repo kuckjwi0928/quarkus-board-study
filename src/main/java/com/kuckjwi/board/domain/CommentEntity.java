@@ -4,22 +4,18 @@ import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
-@Table(name = "boards")
-public class BoardEntity extends PanacheEntity {
-  public String title;
+@Table(name = "comments")
+public class CommentEntity extends PanacheEntity {
   public String content;
 
-  @OneToMany(mappedBy = "board", cascade = CascadeType.PERSIST)
-  public List<CommentEntity> comments = new ArrayList<>();
+  @ManyToOne
+  public BoardEntity board;
 
   @CreationTimestamp
   public LocalDateTime createdAt;

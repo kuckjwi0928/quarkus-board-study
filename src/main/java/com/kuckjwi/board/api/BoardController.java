@@ -2,6 +2,7 @@ package com.kuckjwi.board.api;
 
 import com.kuckjwi.board.domain.Board;
 import com.kuckjwi.board.domain.BoardService;
+import com.kuckjwi.board.domain.Comment;
 
 import javax.validation.Valid;
 import javax.ws.rs.*;
@@ -33,5 +34,13 @@ public class BoardController {
   @Consumes(MediaType.APPLICATION_JSON)
   public Board createBoard(@Valid CreateBoardRequest request) {
     return boardService.createBoard(request.toBoard());
+  }
+
+  @POST
+  @Path("/{id}/comments")
+  @Produces(MediaType.APPLICATION_JSON)
+  @Consumes(MediaType.APPLICATION_JSON)
+  public Comment createComment(long id, @Valid CreateCommentRequest request) {
+    return boardService.createComment(id, request.toComment());
   }
 }

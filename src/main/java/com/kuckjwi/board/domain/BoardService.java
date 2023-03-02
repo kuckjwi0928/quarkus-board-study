@@ -21,14 +21,28 @@ public class BoardService {
   }
 
   public Board getBoard(long id) {
-    return Board.of(boardRepository.findByIdOptional(id)
-            .orElseThrow(NotFoundException::new));
+    return Board.of(this.getBoardEntity(id));
   }
 
   @Transactional
   public Board createBoard(Board board) {
-    BoardEntity entity = Board.toEntity(board);
+    BoardEntity entity = board.toEntity();
     boardRepository.persistAndFlush(entity);
     return Board.of(entity);
+  }
+
+  @Transactional
+  public Comment createComment(long id, Comment comment) {
+    BoardEntity boardEntity = this.getBoardEntity(id);
+    CommentEntity commentEntity = comment.toEntity();
+    boardEntity.comments.add(commentEntity);
+    commentEntity.board = boardEntity;
+    boardRepository.persistAndFlush(boardEntity);
+    return Comment.of(commentEntity);
+  }
+
+  private BoardEntity getBoardEntity(long id) {
+    return boardRepository.findByIdOptional(id)
+            .orElseThrow(NotFoundException::new);
   }
 }
